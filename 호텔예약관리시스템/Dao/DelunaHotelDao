@@ -1,0 +1,117 @@
+package dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+import service.DBService;
+import vo.hotelReservVo;
+import vo.hotelVo;
+
+
+public class DelunaHotelDao{
+Scanner sc = new Scanner(System.in);	
+			//oracleDriver Loading...
+			//ojdbc14.jar일땐 필수인데
+			//ojdbc6.jar일땐 생략가능
+			
+	
+	static{
+		try {
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	static DelunaHotelDao single = null;
+
+	public static DelunaHotelDao getInstance() {
+		
+		//객체가 없으면 생성해라
+		if (single == null)
+			single = new DelunaHotelDao();
+		
+		return single;
+	}
+	
+	//외부에서 생성하지 말것 
+	private DelunaHotelDao() {
+		
+	}
+	
+	//전체조회
+	public List<hotelVo> selectList(){
+		//테이블의 목록정보 - 공식!
+		List<hotelVo> list = new ArrayList<hotelVo>();
+		
+		Connection      	conn = null;
+		PreparedStatement   pstmt = null;
+		ResultSet           rs   = null;
+		String              sql  = "select * from DelunaHotelRoom";
+		
+		
+		try {
+			//1.Connection 얻어오기
+			conn = DBService.getInstance().getConnection();
+			//자원은 다시 돌려놔야함
+			
+			//2.PreparedStatement얻어오기
+			pstmt = conn.prepareStatement(sql);
+			
+			//3.ResultSet얻어오기
+			rs = pstmt.executeQuery();
+			
+			//4. v포장(record ->Vo -> list)
+			//arraylist에 모든 정보가 담겨 있음
+			while(rs.next()){//공식
+				
+				//rs가 가리키는 행(레코드)의 값을 읽어온다.
+				
+				//Vo로 포장
+				hotelVo vo = new hotelVo();
+				
+				vo.setRoomNumber(rs.getInt("RoomNumber"));
+				vo.setRoomGrade(rs.getString("RoomGrade"));
+				vo.setRoomPrice(rs.getInt("RoomPrice"));
+				
+				//list추가
+				list.add(vo);
+			}
+			
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}finally{//무조건 수행하는 명령어 
+		
+			try{
+				//연결되었으면 닫아라 
+				if(rs!=null) rs.close();  		//3
+				if(pstmt!=null )pstmt.close();  //2
+				if(conn!=null)conn.close();     //닫혀야함 1
+				
+				
+			}catch(SQLException e){
+				e.printStackTrace();
+			}
+			
+		}
+		
+		
+		return list;
+	}
+	
+	
+		
+		
+	}
+	
+
+
+
