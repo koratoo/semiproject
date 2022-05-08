@@ -1,0 +1,28 @@
+package vo;
+
+public class hotelVo {
+
+	private String RoomGrade;//
+	private int RoomPrice;//가격
+	private int RoomNumber;//객실호수
+
+	public String getRoomGrade() {
+		return RoomGrade;
+	}
+	public void setRoomGrade(String roomGrade) {
+		RoomGrade = roomGrade;
+	}
+	public int getRoomPrice() {
+		return RoomPrice;
+	}
+	public void setRoomPrice(int roomPrice) {
+		RoomPrice = roomPrice;
+	}
+	public int getRoomNumber() {
+		return RoomNumber;
+	}
+	public void setRoomNumber(int roomNumber) {
+		RoomNumber = roomNumber;
+	}	
+	
+}
