@@ -1,0 +1,104 @@
+package dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import service.DBService;
+import vo.hotelReservVo;
+
+public class hotelReservDao {
+
+	// 싱글턴객체 생성
+	static hotelReservDao single = null;
+
+	public static hotelReservDao getInstance() {
+		if (single == null) {
+			single = new hotelReservDao();
+		}
+		return single;
+	}
+
+	private hotelReservDao() {
+		// 외부에서 생성되지 않도록하기
+	}
+
+	public int addList(hotelReservVo vo) {
+		
+		int res = 0;
+	
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		String sql = "insert into Reservation values(seq_reservation_reservNum.nextVal, ?, ?)";
+
+		try {
+			// 1. connection 얻어오기
+			conn = DBService.getInstance().getConnection();
+			
+			// 2. pstmt 얻어오기
+			pstmt = conn.prepareStatement(sql);
+			
+			// 3. 파라미터 세팅하기
+			
+			pstmt.setString(1, vo.getReservName());
+			pstmt.setInt(2, vo.getReservRoom());
+			
+			// 4. result set 얻어오기
+			res = pstmt.executeUpdate();
+
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				pstmt.close();
+				conn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return res;
+
+	}
+	public int deleteList(hotelReservVo vo) {
+		Connection connection = null;
+		PreparedStatement pstmt = null;
+		int rs = 0;
+		String sql = "delete from reservation where reservNum= ?";
+
+		try {
+			// 1. connection 얻어오기
+			connection = DBService.getInstance().getConnection();
+			
+			// 2. pstmt 얻어오기
+			pstmt = connection.prepareStatement(sql);
+			
+			// 2-1. 파라미터 세팅하기
+			pstmt.setInt(1, vo.getReservNum());
+			
+			// 3. result set 얻어오기
+			rs = pstmt.executeUpdate();
+			
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				pstmt.close();
+				connection.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return rs;
+
+	}
+
+
+}
