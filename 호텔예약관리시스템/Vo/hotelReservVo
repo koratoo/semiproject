@@ -1,0 +1,40 @@
+package vo;
+
+public class hotelReservVo {
+
+	private int ReservNum;//
+	private String ReservName;
+	private int ReservRoom;//방호수
+	
+	
+	
+	public hotelReservVo(String reservName, int reservRoom) {
+		this.ReservName=reservName;
+		this.ReservRoom=reservRoom;
+	}
+	public hotelReservVo(int reservNum) {
+		this.ReservNum=reservNum;
+	}
+	
+	
+	public int getReservNum() {
+		return ReservNum;
+	}
+	public void setReservNum(int reservNum) {
+		ReservNum = reservNum;
+	}
+	public String getReservName() {
+		return ReservName;
+	}
+	public void setReservName(String reservName) {
+		ReservName = reservName;
+	}
+	public int getReservRoom() {
+		return ReservRoom;
+	}
+	public void setReservRoom(int reservRoom) {
+		ReservRoom = reservRoom;
+	}
+	
+
+}
